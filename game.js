@@ -1,5 +1,4 @@
 let userFirstNum;
-let compGuess;
 let compNum = generateMainNumber();
 let guessCount = 0;
 console.log(`Число компьютера: ${compNum}`);
@@ -37,13 +36,13 @@ function createImage(src, alt) {
     const img = document.createElement('img');
     img.src = src;
     img.alt = alt;
-    img.width = 50; 
-    img.height = 50; 
+    img.width = 50;
+    img.height = 50;
     return img;
 }
 
 function displayImages(result, element) {
-    element.innerHTML = ''; 
+    element.innerHTML = '';
 
     for (let i = 0; i < result.bulls; i++) {
         const img = createImage('image/bull.png', 'Бык');
@@ -58,12 +57,12 @@ function displayImages(result, element) {
 
 function guess() {
     guessCount++;
+    let compGuess = Array.from({ length: 4 }, () => Math.floor(Math.random() * 10)).join('');
 
     if (guessCount === 14) {
         compGuess = userFirstNum;
-    } else {
-        compGuess = Array.from({ length: 4 }, () => Math.floor(Math.random() * 10)).join('');
     }
+
     let compOutput = document.getElementById('compOutput');
     const compResult = getCowsBulls(compGuess, userFirstNum);
     compOutput.innerHTML = `${compGuess} - ${compResult.bulls} быков, ${compResult.cows} коров`;
@@ -73,7 +72,7 @@ function guess() {
     let number = document.getElementById('myNum').value;
     let userOutput = document.getElementById('userOutput');
 
-    if (number.length !== 4 || isNaN(number) || number.includes('.')) {
+    if (number.length !== 4 || isNaN(number) || userFirstNum.includes('.')) {
         userOutput.innerHTML = 'Пожалуйста, введите четырёхзначное число.';
         return;
     }
@@ -88,7 +87,7 @@ function guess() {
     } else if (compGuess === userFirstNum) {
         userOutput.innerHTML = 'Поражение! Компьютер угадал ваше число.';
         disableButton();
-    } 
+    }
 }
 
 function generateMainNumber() {
