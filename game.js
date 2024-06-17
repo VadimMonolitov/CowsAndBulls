@@ -1,16 +1,21 @@
 let userFirstNum;
+let compGuess;
 let compNum = generateMainNumber();
-let correctPositions = [];
+let guessCount = 0;
 console.log(`Число компьютера: ${compNum}`);
 
 while (true) {
     userFirstNum = prompt('Введите ваше число');
-    if (userFirstNum.length !== 4 || new Set(userFirstNum).size !== 4) {
+    if (userFirstNum.length !== 4 || new Set(userFirstNum).size !== 4 || userFirstNum.includes('.')) {
         alert('Повторите ввод: число должно содержать ровно 4 уникальные цифры');
     } else {
         console.log(`Число пользователя: ${userFirstNum}`);
         break;
     }
+}
+
+function disableButton() {
+    document.getElementById('guessButton').disabled = true;
 }
 
 function getCowsBulls(num, mainNum) {
@@ -20,46 +25,70 @@ function getCowsBulls(num, mainNum) {
         const index = mainNum.indexOf(num[i]);
         if (index === i) {
             bulls++;
-            if (!correctPositions.includes(i)) {
-                correctPositions.push(i);
-            }
         } else if (index > -1) {
             cows++;
         }
     }
 
-    return `${num} - ${bulls} быков, ${cows} коров`;
+    return { bulls, cows };
+}
+
+function createImage(src, alt) {
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = alt;
+    img.width = 50; 
+    img.height = 50; 
+    return img;
+}
+
+function displayImages(result, element) {
+    element.innerHTML = ''; 
+
+    for (let i = 0; i < result.bulls; i++) {
+        const img = createImage('image/bull.png', 'Бык');
+        element.appendChild(img);
+    }
+
+    for (let i = 0; i < result.cows; i++) {
+        const img = createImage('image/cow.png', 'Корова');
+        element.appendChild(img);
+    }
 }
 
 function guess() {
-    let compGuessArray = [];
-    for (let i = 0; i < 4; i++) {
-        if (correctPositions.includes(i)) {
-            compGuessArray.push(userFirstNum[i]);
-        } else {
-            compGuessArray.push(Math.floor(Math.random() * 10).toString());
-        }
-    }
-    let compGuess = compGuessArray.join('');
+    guessCount++;
 
-    let tempOut = document.getElementById('temp-out');
-    tempOut.innerHTML = getCowsBulls(compGuess, userFirstNum);
+    if (guessCount === 14) {
+        compGuess = userFirstNum;
+    } else {
+        compGuess = Array.from({ length: 4 }, () => Math.floor(Math.random() * 10)).join('');
+    }
+    let compOutput = document.getElementById('compOutput');
+    const compResult = getCowsBulls(compGuess, userFirstNum);
+    compOutput.innerHTML = `${compGuess} - ${compResult.bulls} быков, ${compResult.cows} коров`;
+
+    displayImages(compResult, document.querySelector('.comp-result'));
 
     let number = document.getElementById('myNum').value;
-    let out = document.getElementById('out');
+    let userOutput = document.getElementById('userOutput');
 
-    if (number.length !== 4 || isNaN(number)) {
-        out.innerHTML = 'Пожалуйста, введите четырёхзначное число.';
+    if (number.length !== 4 || isNaN(number) || number.includes('.')) {
+        userOutput.innerHTML = 'Пожалуйста, введите четырёхзначное число.';
         return;
     }
+    const userResult = getCowsBulls(number, compNum);
+    userOutput.innerHTML = `${number} - ${userResult.bulls} быков, ${userResult.cows} коров`;
 
-    if (number == compNum) {
+    displayImages(userResult, document.querySelector('.user-result'));
+
+    if (number === compNum) {
         out.innerHTML = 'Победа! Число угадано';
+        disableButton();
     } else if (compGuess === userFirstNum) {
-        out.innerHTML = 'Поражение! Компьютер угадал ваше число.';
-    } else {
-        out.innerHTML = getCowsBulls(number, compNum);
-    }
+        userOutput.innerHTML = 'Поражение! Компьютер угадал ваше число.';
+        disableButton();
+    } 
 }
 
 function generateMainNumber() {

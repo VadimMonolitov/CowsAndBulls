@@ -1,16 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     <script src="game.js" defer></script>
-    <p>Введите число: <input type="number" id="myNum"></p>
-    <button onclick="guess()">Угадать</button>
+    <p>Введите число: <input type="text" id="myNum"></p>
+    <button id="guessButton" onclick="guess()">Угадать</button>
     <hr>
-    <p id="out"></p>
-    <p>Догадка компьютера: <span id="temp-out"></span></p>
+    <p id="userOutput"></p>
+    <div class="user-result"></div>
+    <p>Догадка компьютера: <span id="compOutput"></span></p>
+    <div class="comp-result"></div>
 </body>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f8ff;
+        color: #333;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    p {
+        font-size: 18px;
+        margin: 10px 0;
+    }
+
+    input {
+        padding: 10px;
+        font-size: 16px;
+        border: 2px solid #ccc;
+        border-radius: 4px;
+        transition: border-color 0.3s;
+    }
+
+    input:focus {
+        border-color: blue;
+        outline: none;
+    }
+
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: blue;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    hr {
+        width: 80%;
+        border: 1px solid #ccc;
+        margin: 20px 0;
+    }
+
+    #compOutput, #userOutput {
+        font-weight: bold;
+        color: violet;
+    }
+
+</style>
+</style>
+
 </html>
