@@ -46,12 +46,12 @@ function displayImages(result, element) {
 
     for (let i = 0; i < result.bulls; i++) {
         const img = createImage('image/bull.png', 'Бык');
-        element.appendChild(img);
+        element.append(img);
     }
 
     for (let i = 0; i < result.cows; i++) {
         const img = createImage('image/cow.png', 'Корова');
-        element.appendChild(img);
+        element.append(img);
     }
 }
 
@@ -82,7 +82,7 @@ function guess() {
     displayImages(userResult, document.querySelector('.user-result'));
 
     if (number === compNum) {
-        out.innerHTML = 'Победа! Число угадано';
+        userOutput.innerHTML = 'Победа! Число угадано';
         disableButton();
     } else if (compGuess === userFirstNum) {
         userOutput.innerHTML = 'Поражение! Компьютер угадал ваше число.';
